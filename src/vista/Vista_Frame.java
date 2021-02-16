@@ -1,3 +1,5 @@
+//prueba de sincronismo
+
 package vista;
 
 import java.awt.BorderLayout;
