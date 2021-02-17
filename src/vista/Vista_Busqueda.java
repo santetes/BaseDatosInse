@@ -83,7 +83,7 @@ public class Vista_Busqueda extends JPanel implements ActionListener, MouseListe
 				this.modelo.getDataVector().clear();// Vaciamos lo que haya en la tabla
 				String consultaStr = textDescripcion.getText();
 				consultaBBDD = new ConsultaBBDD();
-				consultaBBDD.ejecutaConsulta(consultaStr);
+				consultaBBDD.ejecutaConsulta(consultaStr);//ejecutamos la sobrecarga de constructor de la clase ConsultaBBDD
 				arrayTableModel = consultaBBDD.tomaTableModel();
 				String[] arrayRow = new String[4];
 
@@ -91,9 +91,10 @@ public class Vista_Busqueda extends JPanel implements ActionListener, MouseListe
 				// a la JTable
 				for (int x = 0; x < arrayTableModel.length; x++) {
 					for (int y = 0; y < arrayTableModel[x].length; y++) {
-						arrayRow[y] = arrayTableModel[x][y];
+						arrayRow[y] = arrayTableModel[x][y];//almacena en el array temporal todas las columnas de un registro
 					}
-					modelo.addRow(arrayRow);
+					modelo.addRow(arrayRow);//añade el array a la tabla y a cada vuelta de bucle vuelve a sobreescribir los indices del array con los
+					//nuevos valores
 				}
 			}
 		}
@@ -102,22 +103,25 @@ public class Vista_Busqueda extends JPanel implements ActionListener, MouseListe
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() > 1) {
+		if (e.getClickCount() > 1) {//para detectar doble click
+			
+			//almacenamos el valor de la columna 0 (id) en un int. Para ello pasamos el objeto devuelto a string y de ahí a int
 			int consultaInt = Integer.parseInt((table.getValueAt(table.getSelectedRow(), 0)).toString());
-			vistaFichaEquipos = new Vista_FichaEquipos(consultaInt);
-			controlVistas.setVistaFichaEquipos(vistaFichaEquipos);
-			controlVistas.setVistaBusqueda(this);
+			
+			controlVistas.getVistaFrame().remove(controlVistas.getVistaFichaEquipos());//Borramos de vistaFrame la vistaFichaEquipos inicial
+			vistaFichaEquipos = new Vista_FichaEquipos(consultaInt);//creamos la nueva con la nueva consulta
+			controlVistas.setVistaFichaEquipos(vistaFichaEquipos);//almacenamos la nueva vista fichaEquipos
+			controlVistas.setVistaBusqueda(this);//tambien almacenamos la actual vistaBusqueda con los resultados de la consulta
 			controlVistas.getVistaFrame().getContentPane().add(controlVistas.getVistaFichaEquipos(), BorderLayout.CENTER);
 			vistaFichaEquipos.desactivaBotones();
-			vistaFichaEquipos.dameControlVistas(controlVistas);// se vuelve a enviar el control de vista a Fichaequipos para que tenga la vista
-																// de busqueda actualizada
+			vistaFichaEquipos.setControlVistas(controlVistas);// Se envia el control vistas  para que pueda interactuar con las demas vistas
 			this.setVisible(false);
 			controlVistas.getVistaFichaEquipos().setVisible(true);
 
 		}
 	}
 
-	public void dameControlVistas(ControlVistas ctrlV) {
+	public void setContolVistas(ControlVistas ctrlV) {
 		this.controlVistas = ctrlV;
 	}
 
@@ -159,13 +163,16 @@ public class Vista_Busqueda extends JPanel implements ActionListener, MouseListe
 		btnBuscar.addActionListener(this);
 		add(btnBuscar);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(80, 251, 749, 267);
-		add(scrollPane);
-
+		
+//Bloque de codigo para la creación de la JTable--------------------------------
+		
 		modelo = new tablaModeloPorDefecto(0, 4);
 		String[] arrayEncabezados = new String[] { "ID", "DESCRIPCIÓN", "FECHA ÚLTIMA CAL", "FECHA PRÓXIMA CAL" };
 		modelo.setColumnIdentifiers(arrayEncabezados);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(80, 251, 749, 267);
+		add(scrollPane);
 
 		table = new JTable(modelo);
 
@@ -174,8 +181,9 @@ public class Vista_Busqueda extends JPanel implements ActionListener, MouseListe
 		columnModel.getColumn(1).setPreferredWidth(250);
 		columnModel.getColumn(2).setPreferredWidth(80);
 		columnModel.getColumn(3).setPreferredWidth(80);
-		table.addMouseListener(this);
+		table.addMouseListener(this);//Oyente de acción de click con ratón para selección de equipo para abrir la vistaFichaEquipo
 		scrollPane.setViewportView(table);
+//---------------------------------------------------------------------------------
 
 		btnRegresar = new JButton("REGRESAR");
 		btnRegresar.setBounds(730, 159, 99, 34);

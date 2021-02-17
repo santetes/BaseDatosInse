@@ -14,6 +14,7 @@ public class ControlRuta {
 
 	public void buscaRuta() {
 
+		//Bloqe de codigo que se encarga de abrir la ventan del explorador y filtrar selección por tipo de archivo y extensión
 		BufferedWriter archivoEscritura = null;
 		JFileChooser selectorArchivos = new JFileChooser();
 		selectorArchivos.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -22,7 +23,7 @@ public class ControlRuta {
 
 		int resultado = selectorArchivos.showOpenDialog(null);
 		File archivo = selectorArchivos.getSelectedFile();
-
+//--------------------------------------------------------------------------------
 		try {
 			if (resultado == JFileChooser.APPROVE_OPTION) {
 				FileWriter fileWr = new FileWriter("config.ini", false);
@@ -44,7 +45,7 @@ public class ControlRuta {
 		} 
 	}
 	
-	public int tomaSeleccion() {
+	public int tomaSeleccion() {//metodo para indicar a VistaFrame si se ha selecionado un archivo en la ventana del esplorador
 		return seleccion;
 	}
 }

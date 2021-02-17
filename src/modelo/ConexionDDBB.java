@@ -21,16 +21,19 @@ public class ConexionDDBB {
 
 	public void estableceConexion() {
 		try {
-			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");//driver para conexión con base de datos access
+			
+			//Bloque de codigo para lectura de directorio de base de datos del archivo config.ini
 			File archivo = new File ("config.ini");
 			FileReader fr = new FileReader (archivo);
 			BufferedReader br = new BufferedReader(fr);
 			String ruta = br.readLine();
-			//miConexion = DriverManager.getConnection("jdbc:ucanaccess://C:\\Users\\Santos\\Desktop\\Base de datos SEN\\EQUIPOS_SEN.mdb;memory=false");
+			//----------------------------------------------------------------------------------
 			miConexion = DriverManager.getConnection("jdbc:ucanaccess://" + ruta + ";memory=false");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ARCHIVO DE BASE DE DATOS ERRONEO. Elija el archivo correcto y reinicie aplicación");
-			controlRuta.buscaRuta();
+			controlRuta.buscaRuta();//Si no ha sido posible establecer conexión con base de datos vuelve a salir ventana explorador para seleccionar archivo
+			//y se cierra aplicación
 			System.exit(1);
 		}
 	}

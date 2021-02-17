@@ -57,28 +57,13 @@ public class Vista_FichaEquipos extends JPanel implements ActionListener {
 	private JButton botonBuscar;
 	private JButton botonNuevo;
 	private JButton botonGuardar;
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getSource() == botonBuscar) {
-			this.setVisible(false);
-			controlVistas.getVistaFrame().getContentPane().add(controlVistas.getVistaBusqueda(), BorderLayout.CENTER);
-			controlVistas.getVistaBusqueda().setVisible(true);
-		}
-	}
-
-	public void dameControlVistas(ControlVistas ctrlV) {
-		this.controlVistas = ctrlV;
-	}
-
-	public void desactivaBotones() {
-		botonNuevo.setEnabled(false);
-		botonGuardar.setEnabled(false);
-	}
+	private JButton btnAbrirCarpeta;
 
 	public Vista_FichaEquipos(int consulta) {
 
+		//Nada mas arrancar VistaFichaEquipos se crea un objeto consultaBBDD que se conecta a la bbdd y ejecuta una primer consulta inicial
+		//esta consulta muestra el primer equipo de la base de datos (1)
+		//Esta consulta es devuelta en forma de objeto Dto al cual tiene todos los datos obtenidos de la consulta
 		consultaBBDD = new ConsultaBBDD();
 		consultaBBDD.ejecutaConsulta(consulta);		
 		dtoFicha = consultaBBDD.tomaDto();
@@ -196,6 +181,13 @@ public class Vista_FichaEquipos extends JPanel implements ActionListener {
 		botonGuardar = new JButton("GUARDAR");
 		botonGuardar.setBounds(845, 177, 90, 28);
 		add(botonGuardar);
+		
+		ImageIcon icono = new ImageIcon(getClass().getResource("icon folder.png"));
+		
+		btnAbrirCarpeta = new JButton(icono);
+		btnAbrirCarpeta.setBounds(844, 232, 91, 42);
+		btnAbrirCarpeta.addActionListener(new Carpeta(textCodigo.getText()));
+		add(btnAbrirCarpeta);
 
 		JCheckBox chckbxCalibra = new JCheckBox("Se Calibra?");
 		chckbxCalibra.setBackground(new Color(128, 128, 128));
@@ -436,12 +428,28 @@ public class Vista_FichaEquipos extends JPanel implements ActionListener {
 		table.setShowVerticalLines(true);
 		table.setShowHorizontalLines(true);
 		
-		ImageIcon icono = new ImageIcon(getClass().getResource("icon folder.png"));
-		//ImageIcon icono = new ImageIcon("icon folder.png");
-		JButton btnAbrirCarpeta = new JButton(icono);
-		btnAbrirCarpeta.setBounds(844, 232, 91, 42);
-		btnAbrirCarpeta.addActionListener(new Carpeta(textCodigo.getText()));
-		add(btnAbrirCarpeta);
+		
+		
+		
 
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() == botonBuscar) {
+			this.setVisible(false);
+			controlVistas.getVistaFrame().getContentPane().add(controlVistas.getVistaBusqueda(), BorderLayout.CENTER);
+			controlVistas.getVistaBusqueda().setVisible(true);
+		}
+	}
+	
+	public void desactivaBotones() {
+		botonNuevo.setEnabled(false);
+		botonGuardar.setEnabled(false);
+	}
+	
+	public void setControlVistas(ControlVistas ctrlV) {
+		this.controlVistas = ctrlV;
 	}
 }

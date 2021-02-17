@@ -14,7 +14,7 @@ public class Vista_Inicio extends JPanel {
 
 	}
 	
-	public void dameControlVistas(ControlVistas ctrlV) {
+	public void setControVistas(ControlVistas ctrlV) {
 		this.controlVistas = ctrlV;
 	}
 

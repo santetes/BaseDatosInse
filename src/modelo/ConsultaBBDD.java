@@ -26,18 +26,21 @@ public class ConsultaBBDD {
 	private Statement miSentencia;
 	private ResultSet rs;
 
-	public void ejecutaConsulta(int consultaInt) {// Consulta para la vistaFicha donde solo puede aparecer uno de los equipos
+	public void ejecutaConsulta(int consultaInt) {// Consulta para la vistaFicha donde solo puede aparecer uno de los equipos o en vistaBusqueda si
+		//se busca por ID
 
 		conexionDDBB = new ConexionDDBB();
-		conexionDDBB.estableceConexion();
-		miConexion = conexionDDBB.dameConexion();
-		dtoFicha = new ObjetoDTO();
+		conexionDDBB.estableceConexion();//Conecta con la bbdd
+		miConexion = conexionDDBB.dameConexion();//retorna un objeto Connection
+		dtoFicha = new ObjetoDTO();//crea objeto Dto para almacenado de toda la información de la consulta
 		String consultaSQL = "SELECT * FROM EQUIPOS DE MEDIDA WHERE CÓDIGO =" + consultaInt;// valor indicado para busqueda. 1 en caso de primer arranque
 
 		try {
-			miSentencia = miConexion.createStatement();
-			rs = miSentencia.executeQuery(consultaSQL);
-
+			miSentencia = miConexion.createStatement();//Prepara la sentencia para ejecutar la consulta
+			rs = miSentencia.executeQuery(consultaSQL);//ejecuta consulta y la almacena en un resultset
+			
+			//Bloque de codigo para almacenar en un objeto Dto todo el contenido del resultset. Un solo resultado con 21 columnas.
+			//Ya que en la consulta por código solo encontrará un registro
 			while (rs.next()) {
 				dtoFicha.setCodigo(rs.getString(1));
 				dtoFicha.setNombreEquipo(rs.getString(2));
@@ -90,7 +93,7 @@ public class ConsultaBBDD {
 		conexionDDBB.estableceConexion();
 		miConexion = conexionDDBB.dameConexion();
 		dtoBusqueda = new ObjetoDTO();
-		arrayDto = new ArrayList<ObjetoDTO>();
+		arrayDto = new ArrayList<ObjetoDTO>();//Se crea un array para almacenar tantos objetos Dto como registros encontrados en la consulta
 		String consultaSQL = "SELECT * FROM [EQUIPOS DE MEDIDA] WHERE [NOMBRE DEL EQUIPO] LIKE '%" + consultaStr + "%'";
 
 		try {
@@ -116,7 +119,7 @@ public class ConsultaBBDD {
 			// RESULTSET EN UN ARRAY BIDIMENSIONAL SIN PASAR POR DTO
 			int numeroRegistros = arrayDto.size();
 			int columnas = 4;// codigo, nombreequipo,fecha ultcal, fecha proxcal
-			int index = 0;
+			int index = 0;//Indice que indica con que objeto Dto estamos extrallendo datos en cada vuelta del bucle
 			arrayTableModel = new String[numeroRegistros][columnas];
 			for (int i = 0; i < numeroRegistros; i++) {
 				for (int e = 0; e < columnas; e++) {
@@ -157,11 +160,11 @@ public class ConsultaBBDD {
 
 	}
 
-	public ObjetoDTO tomaDto() {
+	public ObjetoDTO tomaDto() {//Devolución de objeto Dto para vista FichaEquipos
 		return dtoFicha;
 	}
 
-	public String[][] tomaTableModel() {
+	public String[][] tomaTableModel() {//Devolución de array bidimensional (registro|Columna) para JTable vista busqueda
 		return arrayTableModel;
 	}
 
