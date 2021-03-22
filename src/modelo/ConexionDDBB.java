@@ -21,7 +21,7 @@ public class ConexionDDBB {
 
 	public void estableceConexion() {
 		try {
-			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");//driver para conexión con base de datos access
+			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");//carga de forma dinámica el driver para conexión con base de datos access
 			
 			//Bloque de codigo para lectura de directorio de base de datos del archivo config.ini
 			File archivo = new File ("config.ini");

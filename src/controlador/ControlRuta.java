@@ -45,7 +45,7 @@ public class ControlRuta {
 		} 
 	}
 	
-	public int tomaSeleccion() {//metodo para indicar a VistaFrame si se ha selecionado un archivo en la ventana del esplorador
+	public int tomaSeleccion() {//metodo para indicar a VistaFrame si se ha selecionado un archivo en la ventana del explorador
 		return seleccion;
 	}
 }
